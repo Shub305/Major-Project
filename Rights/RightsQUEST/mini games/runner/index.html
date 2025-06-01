@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Safety Sprint</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: #a0d8f7;
+    overflow: hidden;
+  }
+  #gameCanvas {
+    background: #8ed0f0;
+    display: block;
+    margin: 0 auto;
+    border: 4px solid #0066cc;
+    border-radius: 10px;
+    background-image: linear-gradient(to top, #7cceff 0%, #a0d8f7 100%);
+  }
+  #score {
+    text-align: center;
+    font-size: 24px;
+    margin: 10px;
+    color: #004a99;
+  }
+  #message {
+    text-align: center;
+    font-size: 20px;
+    color: #006600;
+    height: 24px;
+    margin: 5px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<div id="score">Score: 0</div>
+<div id="message"></div>
+<canvas id="gameCanvas" width="600" height="400"></canvas>
+
+<script>
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+
+  const groundY = 350;
+  let score = 0;
+  let messageTimeout;
+
+  // Character (player)
+  const player = {
+    x: 50,
+    y: groundY - 50,
+    width: 40,
+    height: 50,
+    color: '#ffbb33',
+    velocityY: 0,
+    gravity: 0.8,
+    jumpStrength: -15,
+    isJumping: false
+  };
+
+  // Items: safe (green), unsafe (red)
+  class Item {
+    constructor(x, y, type) {
+      this.x = x;
+      this.y = y;
+      this.width = 40;
+      this.height = 40;
+      this.type = type; // 'safe' or 'unsafe'
+      this.speed = 4;
+      this.label = this.type === 'safe' ? randomSafeLabel() : randomUnsafeLabel();
+    }
+    move() {
+      this.x -= this.speed;
+    }
+    draw() {
+      ctx.fillStyle = this.type === 'safe' ? '#4caf50' : '#e53935';
+      ctx.fillRect(this.x, this.y, this.width, this.height);
+      ctx.fillStyle = 'white';
+      ctx.font = '12px Comic Sans MS';
+      ctx.textAlign = 'center';
+      ctx.fillText(this.label, this.x + this.width / 2, this.y + this.height / 2 + 4);
+    }
+  }
+
+  // Safe and unsafe labels
+  function randomSafeLabel() {
+    const safeChoices = [
+      "Tell adult", "Say NO", "Look both ways", "Call 100", "Stay close"
+    ];
+    return safeChoices[Math.floor(Math.random() * safeChoices.length)];
+  }
+  function randomUnsafeLabel() {
+    const unsafeChoices = [
+      "Excess Candy!", "Stranger", "Secret", "Unknown car", "Run away"
+    ];
+    return unsafeChoices[Math.floor(Math.random() * unsafeChoices.length)];
+  }
+
+  let items = [];
+  let spawnTimer = 0;
+  const spawnInterval = 90; // frames
+
+  // Controls: jump on space or tap
+  document.addEventListener('keydown', e => {
+    if ((e.code === 'Space' || e.code === 'ArrowUp') && !player.isJumping) {
+      player.velocityY = player.jumpStrength;
+      player.isJumping = true;
+    }
+  });
+  canvas.addEventListener('click', () => {
+    if (!player.isJumping) {
+      player.velocityY = player.jumpStrength;
+      player.isJumping = true;
+    }
+  });
+
+  // Collision detection
+  function isColliding(a, b) {
+    return !(
+      a.x + a.width < b.x ||
+      a.x > b.x + b.width ||
+      a.y + a.height < b.y ||
+      a.y > b.y + b.height
+    );
+  }
+
+  // Show messages
+  function showMessage(text, color = '#006600') {
+    clearTimeout(messageTimeout);
+    const msgDiv = document.getElementById('message');
+    msgDiv.style.color = color;
+    msgDiv.textContent = text;
+    messageTimeout = setTimeout(() => {
+      msgDiv.textContent = '';
+    }, 3000);
+  }
+
+  // Game loop
+  function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw ground
+    ctx.fillStyle = '#3b8b3b';
+    ctx.fillRect(0, groundY, canvas.width, canvas.height - groundY);
+
+    // Update player
+    player.velocityY += player.gravity;
+    player.y += player.velocityY;
+    if (player.y > groundY - player.height) {
+      player.y = groundY - player.height;
+      player.velocityY = 0;
+      player.isJumping = false;
+    }
+
+    // Draw player (simple rectangle with a face)
+    ctx.fillStyle = player.color;
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+    // Face
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    ctx.arc(player.x + 12, player.y + 15, 5, 0, Math.PI * 2);
+    ctx.arc(player.x + 28, player.y + 15, 5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#000';
+    ctx.beginPath();
+    ctx.moveTo(player.x + 10, player.y + 40);
+    ctx.quadraticCurveTo(player.x + 20, player.y + 50, player.x + 30, player.y + 40);
+    ctx.stroke();
+
+    // Spawn new items
+    spawnTimer++;
+    if (spawnTimer >= spawnInterval) {
+      spawnTimer = 0;
+      const type = Math.random() < 0.7 ? 'safe' : 'unsafe'; // 70% safe
+      const yPositions = [groundY - 40, groundY - 90, groundY - 140];
+      const y = yPositions[Math.floor(Math.random() * yPositions.length)];
+      items.push(new Item(canvas.width, y, type));
+    }
+
+    // Move and draw items
+    for (let i = items.length - 1; i >= 0; i--) {
+      let item = items[i];
+      item.move();
+      item.draw();
+
+      // Remove if off screen
+      if (item.x + item.width < 0) {
+        items.splice(i, 1);
+        continue;
+      }
+
+      // Check collision with player
+      if (isColliding(player, item)) {
+        if (item.type === 'safe') {
+          score += 10;
+          showMessage('Great choice! ' + item.label);
+        } else {
+          score = Math.max(0, score - 15);
+          showMessage('Oops! That’s unsafe: ' + item.label, '#cc0000');
+        }
+        items.splice(i, 1);
+      }
+    }
+
+    // Update score display
+    document.getElementById('score').textContent = `Score: ${score}`;
+
+    requestAnimationFrame(gameLoop);
+  }
+
+  gameLoop();
+</script>
+
+</body>
+</html>

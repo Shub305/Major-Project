@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- registration form -->
+<!-- registration form -->
+<form id="signupForm" action="/signup" method="POST">
+    <div class="register-container" id="register">
+        <!-- your existing form content -->
+        <div class="two-forms">
+            <div class="input-box">
+                <input type="text" class="input-field" placeholder="Firstname" name="firstname">
+                <i class="bx bx-user"></i>
+            </div>
+            <div class="input-box">
+                <input type="text" class="input-field" placeholder="Lastname" name="lastname">
+                <i class="bx bx-user"></i>
+            </div>
+        </div>
+        <div class="input-box">
+            <input type="text" class="input-field" placeholder="Email" name="email">
+            <i class="bx bx-envelope"></i>
+        </div>
+        <div class="input-box">
+            <input type="password" class="input-field" placeholder="Password" name="password">
+            <i class="bx bx-lock-alt"></i>
+        </div>
+        <!-- Remove the submit button from here -->
+        <div class="two-col">
+            <!-- your existing checkbox and terms section -->
+        </div>
+    </div>
+</form>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the register button
+        var registerBtn = document.querySelector('#registerBtn');
+
+        // Add click event listener to the register button
+        registerBtn.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            // Get form data
+            var formData = new FormData(document.getElementById('signupForm'));
+
+            // Send a POST request to the server with the form data
+            fetch('/signup', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Redirect or show success message
+                    window.location.href = '/'; // Redirect to home page after successful registration
+                } else {
+                    throw new Error('Registration failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error (e.g., show error message to user)
+            });
+        });
+    });
+</script>
+
+
+</body>
+</html>

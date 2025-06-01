@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rights Radar Word Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #acdff9;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 30px);
+      gap: 5px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .cell {
+      width: 30px;
+      height: 30px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .cell.selected {
+      background-color: #a7d3f4;
+    }
+    .cell.correct {
+      background-color: #8bc34a;
+      color: white;
+    }
+    .word-list {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .message {
+      margin-top: 30px;
+      font-style: italic;
+      color: #555;
+    }
+    .button-container {
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rights Radar Word Search</h1>
+  <div class="grid" id="grid"></div>
+  <div class="word-list">
+    Find these words: EDUCATION, FOOD, SHELTER, LOVE, HEALTH, SAFETY
+  </div>
+  <div class="button-container">
+    <button onclick="showAnswers()">Show Correct Answers</button>
+  </div>
+  <div class="message">
+    Repetition of key right-related words builds memory and recognition.
+  </div>
+  <script>
+    const letters = [
+      "S","A","F","E","T","Y","L","O","V","E","H","Z",
+      "H","E","A","L","T","H","C","O","R","D","E","A",
+      "E","X","H","S","H","E","L","T","E","R","A","W",
+      "L","L","O","V","E","A","T","I","E","D","L","U",
+      "T","E","U","D","S","A","F","E","O","O","D","T",
+      "E","R","I","A","H","L","D","S","C","T","T","X",
+      "R","E","T","A","C","I","D","U","E","H","H","L",
+      "U","A","T","N","L","O","V","E","E","T","E","V",
+      "C","D","I","E","A","S","F","O","O","D","A","S",
+      "A","E","D","U","C","A","T","I","O","N","T","I"
+    ];
+
+    const words = {
+      "EDUCATION": [109, 110, 111, 112, 113, 114, 115, 116, 117],
+      "FOOD": [52, 53, 54, 55],
+      "SHELTER": [27, 28, 29, 30, 31, 32, 33],
+      "LOVE": [37, 38, 39, 40],
+      "HEALTH": [12, 13, 14, 15, 16, 17],
+      "SAFETY": [0, 1, 2, 3, 4, 5]
+    };
+
+    const grid = document.getElementById("grid");
+    const cells = [];
+    let selectedIndices = [];
+
+    letters.forEach((letter, index) => {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      cell.textContent = letter;
+      cell.dataset.index = index;
+      cell.addEventListener("click", () => {
+        cell.classList.toggle("selected");
+        const idx = selectedIndices.indexOf(index);
+        if (idx === -1) {
+          selectedIndices.push(index);
+        } else {
+          selectedIndices.splice(idx, 1);
+        }
+        checkSelection();
+      });
+      grid.appendChild(cell);
+      cells.push(cell);
+    });
+
+    function checkSelection() {
+      const sortedSelection = [...selectedIndices].sort((a, b) => a - b).join(',');
+      for (const [word, indices] of Object.entries(words)) {
+        if (sortedSelection === indices.sort((a, b) => a - b).join(',')) {
+          indices.forEach(i => cells[i].classList.add("correct"));
+          selectedIndices = [];
+          cells.forEach(cell => cell.classList.remove("selected"));
+        }
+      }
+    }
+
+    function showAnswers() {
+      Object.values(words).flat().forEach(index => {
+        if (cells[index]) {
+          cells[index].classList.add("correct");
+        }
+      });
+    }
+  </script>
+</body>
+</html>

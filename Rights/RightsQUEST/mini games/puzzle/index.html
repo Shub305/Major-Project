@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rights Puzzle Quiz</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #99c5eb;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+  }
+  h1 {
+    color: #004080;
+  }
+  #puzzle {
+    margin: 20px auto;
+    width: 360px;
+    height: 240px;
+    position: relative;
+    border: 2px solid #004080;
+    background-color: #ddd;
+  }
+  .piece {
+    width: 120px;
+    height: 120px;
+    position: absolute;
+    border: 1px solid #888;
+    cursor: pointer;
+    background-image: url(./picture.png);
+    background-size: 360px 240px;
+    filter: grayscale(100%);
+    transition: filter 0.3s;
+  }
+  .piece.placed {
+    filter: none;
+    cursor: default;
+    border-color: #004080;
+  }
+  #question-container {
+    max-width: 400px;
+    margin: 20px auto;
+    background: #e6f2ff;
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #004080;
+  }
+  .question-text {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .answers button {
+    display: block;
+    margin: 8px auto;
+    padding: 8px 12px;
+    width: 80%;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #004080;
+    background-color: white;
+    cursor: pointer;
+  }
+  .answers button:hover {
+    background-color: #cce6ff;
+  }
+  #message {
+    margin-top: 10px;
+    height: 20px;
+    font-weight: bold;
+    color: green;
+  }
+  #completion-message {
+    margin-top: 30px;
+    font-size: 1.2em;
+    color: #004080;
+  }
+</style>
+</head>
+<body>
+
+<h1>Rights Puzzle Quiz: Right to Education</h1>
+
+<div id="puzzle">
+  <!-- Puzzle pieces -->
+  <div class="piece" id="piece0" style="top:0; left:0; background-position: 0 0;"></div>
+  <div class="piece" id="piece1" style="top:0; left:120px; background-position: -120px 0;"></div>
+  <div class="piece" id="piece2" style="top:0; left:240px; background-position: -240px 0;"></div>
+  <div class="piece" id="piece3" style="top:120px; left:0; background-position: 0 -120px;"></div>
+  <div class="piece" id="piece4" style="top:120px; left:120px; background-position: -120px -120px;"></div>
+  <div class="piece" id="piece5" style="top:120px; left:240px; background-position: -240px -120px;"></div>
+</div>
+
+<div id="question-container">
+  <div class="question-text" id="question-text">Click a puzzle piece to answer a question!</div>
+  <div class="answers" id="answers"></div>
+  <div id="message"></div>
+</div>
+
+<div id="completion-message"></div>
+
+<script>
+  // Questions for each piece
+  const questions = [
+    {
+      question: "What age group has the right to free and compulsory education?",
+      answers: ["Only toddlers", "Children of primary school age", "Adults only"],
+      correct: 1
+    },
+    {
+      question: "Which international document protects the right to education?",
+      answers: ["Universal Declaration of Human Rights", "The Geneva Conventions", "The Paris Agreement"],
+      correct: 0
+    },
+    {
+      question: "Why is education important?",
+      answers: ["To make friends only", "To learn skills for life and work", "To play games"],
+      correct: 1
+    },
+    {
+      question: "Is education a right for all children regardless of gender?",
+      answers: ["Yes", "No"],
+      correct: 0
+    },
+    {
+      question: "Which body monitors children’s rights worldwide?",
+      answers: ["UNICEF", "NASA", "FIFA"],
+      correct: 0
+    },
+    {
+      question: "At what age does compulsory education usually end?",
+      answers: ["At 10", "At 16 or 18", "Never ends"],
+      correct: 1
+    }
+  ];
+
+  const pieces = document.querySelectorAll('.piece');
+  const questionText = document.getElementById('question-text');
+  const answersDiv = document.getElementById('answers');
+  const messageDiv = document.getElementById('message');
+  const completionMessage = document.getElementById('completion-message');
+
+  let selectedPieceIndex = null;
+  let placedPieces = new Set();
+
+  pieces.forEach(piece => {
+    piece.addEventListener('click', () => {
+      if (piece.classList.contains('placed')) {
+        messageDiv.textContent = "This piece is already placed!";
+        return;
+      }
+      selectedPieceIndex = parseInt(piece.id.replace('piece',''));
+      showQuestion(selectedPieceIndex);
+      messageDiv.textContent = "";
+    });
+  });
+
+  function showQuestion(index) {
+    const q = questions[index];
+    questionText.textContent = q.question;
+    answersDiv.innerHTML = '';
+    q.answers.forEach((answer, i) => {
+      const btn = document.createElement('button');
+      btn.textContent = answer;
+      btn.onclick = () => checkAnswer(i);
+      answersDiv.appendChild(btn);
+    });
+  }
+
+  function checkAnswer(answerIndex) {
+    const correctIndex = questions[selectedPieceIndex].correct;
+    if (answerIndex === correctIndex) {
+      placePiece(selectedPieceIndex);
+      messageDiv.style.color = 'green';
+      messageDiv.textContent = "Correct! Piece placed.";
+      clearQuestion();
+      checkCompletion();
+    } else {
+      messageDiv.style.color = 'red';
+      messageDiv.textContent = "Incorrect. Try again.";
+    }
+  }
+
+  function placePiece(index) {
+    placedPieces.add(index);
+    const piece = document.getElementById('piece' + index);
+    piece.classList.add('placed');
+  }
+
+  function clearQuestion() {
+    questionText.textContent = "Click another puzzle piece to answer a question!";
+    answersDiv.innerHTML = '';
+    selectedPieceIndex = null;
+  }
+
+  function checkCompletion() {
+    if (placedPieces.size === questions.length) {
+      completionMessage.textContent = "🎉 Congratulations! You completed the Right to Education puzzle! 🎉\nEducation is a fundamental right for every child.";
+    }
+  }
+</script>
+
+</body>
+</html>

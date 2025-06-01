@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Match the Rights!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f9ff;
+      padding: 20px;
+      text-align: center;
+      background-image: url(./back.png);
+    }
+
+    h1 {
+      color: #005a9c;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: auto;
+      background: beige;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .question {
+      margin-bottom: 30px;
+      text-align: left;
+    }
+
+    .question p {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      padding: 10px;
+      margin: 5px 0;
+      background: #e0f7fa;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    input[type="radio"] {
+      display: none;
+    }
+
+    input[type="radio"]:checked + label.correct {
+      background-color: #d4edda;
+      color: #155724;
+      border: 2px solid #28a745;
+    }
+
+    input[type="radio"]:checked + label.wrong {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 2px solid #dc3545;
+    }
+
+    /* Congrats message per question */
+    .congrats-question {
+      display: none;
+      margin-top: 8px;
+      font-weight: bold;
+      color: #0f5132;
+      background-color: #d1e7dd;
+      border: 2px solid #0f5132;
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 0.95em;
+      max-width: 300px;
+    }
+
+    /* Show congrats message when correct input is checked */
+    #q1b:checked ~ .congrats-q1,
+    #q2a:checked ~ .congrats-q2,
+    #q3a:checked ~ .congrats-q3 {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🧩 Match the Rights</h1>
+<p>Select the correct right for each description below:</p>
+
+<div class="quiz-container">
+
+  <div class="question">
+    <p>1. Every child should be able to go to school and learn.</p>
+    <input type="radio" id="q1a" name="q1" />
+    <label class="wrong" for="q1a">Right to Health</label>
+    <input type="radio" id="q1b" name="q1" />
+    <label class="correct" for="q1b">Right to Education</label>
+    <input type="radio" id="q1c" name="q1" />
+    <label class="wrong" for="q1c">Right to Protection</label>
+
+    <div class="congrats-question congrats-q1">
+      🎉 Great! You selected the correct answer for question 1.
+    </div>
+  </div>
+
+  <div class="question">
+    <p>2. Every child should be safe from harm and abuse.</p>
+    <input type="radio" id="q2a" name="q2" />
+    <label class="correct" for="q2a">Right to Protection</label>
+    <input type="radio" id="q2b" name="q2" />
+    <label class="wrong" for="q2b">Right to Play</label>
+    <input type="radio" id="q2c" name="q2" />
+    <label class="wrong" for="q2c">Right to Participation</label>
+
+    <div class="congrats-question congrats-q2">
+      🎉 Great! You selected the correct answer for question 2.
+    </div>
+  </div>
+
+  <div class="question">
+    <p>3. Every child should be able to see a doctor and get medicines when sick.</p>
+    <input type="radio" id="q3a" name="q3" />
+    <label class="correct" for="q3a">Right to Health</label>
+    <input type="radio" id="q3b" name="q3" />
+    <label class="wrong" for="q3b">Right to Expression</label>
+    <input type="radio" id="q3c" name="q3" />
+    <label class="wrong" for="q3c">Right to Shelter</label>
+
+    <div class="congrats-question congrats-q3">
+      🎉 Great! You selected the correct answer for question 3.
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

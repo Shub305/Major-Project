@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Right or Not?</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Right or Not?</h1>
+  <p>Drag each card to the correct bin!</p>
+
+  <div class="game-area">
+    <div class="card-area" id="cardArea"></div>
+    <div class="bins">
+      <div class="bin" id="rightBin" data-type="right">✅ Is a Right</div>
+      <div class="bin" id="notRightBin" data-type="not">🚫 Not a Right</div>
+    </div>
+  </div>
+
+  <div id="scoreboard">Score: 0</div>
+
+  <script src="script.js"></script>
+</body>
+</html>

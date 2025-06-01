@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini Games</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8fafc;
+      margin: 0;
+      padding: 0;
+      background: url(./back.png);
+      background-size: cover;
+      background-repeat: no-repeat;
+
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2.5rem;
+      color: #1f2937;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 1rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #3b82f6;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: #111827;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: #6b7280;
+      margin-bottom: 1rem;
+    }
+
+    .play-button {
+      background: #3b82f6;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+
+    .play-button:hover {
+      background: #2563eb;
+    }
+  </style>
+</head>
+<body>
+  
+<div class="container">
+  <h1>Mini Games</h1>
+  <div class="grid">
+  <div class="card">
+    <div class="card-icon">🎮</div>
+    <div class="card-title">Right or Not?</div>
+    <div class="card-desc">Tell if the given activity is your right or not</div>
+    <a class="play-button" href="../bin game/index.html">Play</a>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🎮</div>
+    <div class="card-title">Memory Match</div>
+    <div class="card-desc">Flip and match the correct Right with their use.</div>
+    <a class="play-button" href="../memory/index.html">Play</a>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🎮</div>
+    <div class="card-title">Puzzle Quiz</div>
+    <div class="card-desc">Answer the questions to solve the puzzle</div>
+    <a class="play-button" href="../puzzle/index.html">Play</a>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🎮</div>
+    <div class="card-title">Runner</div>
+    <div class="card-desc">Collect the things that one should do to protect rights</div>
+    <a class="play-button" href="../runner/index.html">Play</a>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🎮</div>
+    <div class="card-title">Quiz</div>
+    <div class="card-desc">Answer the quiz questions to earn points</div>
+    <a class="play-button" href="../quiz/index.html">Play</a>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🎮</div>
+    <div class="card-title">Rights Radar</div>
+    <div class="card-desc">Find words from the wordbox</div>
+    <a class="play-button" href="../Word Search/index.html">Play</a>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🎮</div>
+    <div class="card-title">Scrambled Words</div>
+    <div class="card-desc">Figure out and write the correct word</div>
+    <a class="play-button" href="../scrambled words/index.html">Play</a>
+  </div>
+  
+  <div class="card">
+    <div class="card-icon">🎮</div>
+    <div class="card-title">Answer the questions</div>
+    <div class="card-desc">Answer the given questions</div>
+    <a class="play-button" href="../QNA/index.html">Play</a>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
